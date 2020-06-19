@@ -1,0 +1,39 @@
+# Template file for 'MSCL'
+pkgname=MSCL
+version=55.0.1
+revision=1
+hostmakedepends="pkg-config swig"
+makedepends="python3-devel boost-devel"
+short_desc="MicroStrain Communication Library"
+maintainer="Pulux <pulux@pf4sh.de>"
+license="MIT"
+homepage="http://www.microstrain.com/software/mscl"
+distfiles="https://github.com/LORD-MicroStrain/${pkgname}/archive/v${version}.tar.gz"
+checksum=ddc508bd2cbcf3645508352a294df044701e9f0e2009d717b42ffef1e68c60a8
+
+do_build() {
+	export BOOST_ROOT=$(pwd)
+	PY3_VERSION="3.8"
+	echo 'using gcc : host : g++ : <cxxflags>-I/usr/include/python${PY3_VERSION} ;' > __user-config.jam
+	echo 'using python : ${PY3_VERSION} : /usr/bin/python3 : /usr/include/python${PY3_VERSION} : : : : ;' >> __user-config.jam
+	echo -e "\nusing python : ${PY3_VERSION} : : /usr/include/python${PY3_VERSION} : /usr/lib/python${PY3_VERSION} ;" >> Jamroot.jam
+
+	echo "build c++ ---------------------------------------------------------"
+	bjam -j${XBPS_MAKEJOBS} MSCL//stage_c++ release --without-websockets --without-ssl || echo "c++"
+
+	mkdir -p build/swig-python
+	echo "frist run to copy mscl.py -----------------------------------------"
+	bjam -j${XBPS_MAKEJOBS} MSCL//stage_python_x64 release --without-websockets --without-ssl || echo "python stage1"
+	echo "second run --------------------------------------------------------"
+	bjam -j${XBPS_MAKEJOBS} MSCL//stage_python_x64 release --without-websockets --without-ssl || echo "python stage2"
+}
+
+do_install() {
+	mkdir -p ${DESTDIR}/$py3_sitelib
+	cp Output/Python/x64/_mscl.so ${DESTDIR}/$py3_sitelib
+	cp Output/Python/x64/mscl.py ${DESTDIR}/$py3_sitelib
+}
+
+post_install() {
+	vlicense LICENSE
+}
