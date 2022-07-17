@@ -1,0 +1,21 @@
+# Template file for 'python3-starlette'
+pkgname=python3-starlette
+version=0.20.4
+revision=1
+wrksrc=starlette-${version}
+build_style=python3-module
+hostmakedepends="python3-setuptools"
+depends="python3-requests python3-anyio python3-Jinja2 python3-itsdangerous python3-yaml"
+short_desc="Little ASGI library that shines"
+maintainer="Pulux <pulux@pf4sh.eu>"
+license="BSD-3-Clause"
+homepage="https://pypi.org/project/starlette/"
+#changelog=""
+distfiles="${PYPI_SITE}/s/starlette/starlette-${version}.tar.gz"
+checksum=42fcf3122f998fefce3e2c5ad7e5edbf0f02cf685d646a83a08d404726af5084
+# Tests not supported
+make_check=no
+
+post_install() {
+	vlicense LICENSE.md
+}
