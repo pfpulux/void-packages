@@ -1,0 +1,21 @@
+# Template file for 'python3-pydantic'
+pkgname=python3-pydantic
+version=1.9.1
+revision=1
+wrksrc=pydantic-${version}
+build_style=python3-module
+hostmakedepends="python3-setuptools"
+depends="python3-typing_extensions"
+short_desc="Data validation and settings management using python type hints"
+maintainer="Pulux <pulux@pf4sh.eu>"
+license="MIT"
+homepage="https://pypi.org/project/pydantic/"
+#changelog=""
+distfiles="${PYPI_SITE}/p/pydantic/pydantic-${version}.tar.gz"
+checksum=1ed987c3ff29fff7fd8c3ea3a3ea877ad310aae2ef9889a119e22d3f2db0691a
+# Tests not supported
+make_check=no
+
+post_install() {
+	vlicense LICENSE
+}
