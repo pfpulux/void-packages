@@ -1,0 +1,21 @@
+# Template file for 'python3-fastapi'
+pkgname=python3-fastapi
+version=0.78.0
+revision=1
+wrksrc=fastapi-${version}
+build_style=python3-pep517
+hostmakedepends="python3-flit python3-flit_core python3-requests python3-docutils"
+depends="python3-starlette python3-pydantic"
+short_desc="FastAPI framework, fast to code, ready for production"
+maintainer="Pulux <pulux@pf4sh.eu>"
+license="MIT"
+homepage="https://pypi.org/project/fastapi/"
+#changelog=""
+distfiles="${PYPI_SITE}/f/fastapi/fastapi-${version}.tar.gz"
+checksum=3233d4a789ba018578658e2af1a4bb5e38bdd122ff722b313666a9b2c6786a83
+# Tests not supported
+make_check=no
+
+post_install() {
+	vlicense LICENSE
+}
