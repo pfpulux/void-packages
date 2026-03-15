@@ -1,0 +1,29 @@
+# Template file for 'libmodbus'
+pkgname=libmodbus
+version=3.1.12
+revision=1
+build_style=gnu-configure
+short_desc="Modbus library RTU communication over a serial line or a TCP link"
+maintainer="Pulux <pulux@pf4sh.eu>"
+license="LGPL-2.1-or-later"
+homepage="https://libmodbus.org/"
+#changelog=""
+distfiles="https://github.com/stephane/libmodbus/releases/download/v${version}/libmodbus-${version}.tar.gz"
+checksum=2f4d4191cd196c1fba131daec03b621db75129d8255c832fc66b259d9fc46e7b
+
+post_install() {
+	vlicense COPYING.LESSER
+	vdoc README.md
+	vdoc AUTHORS
+	vdoc NEWS.md
+}
+
+libmodbus-devel_package() {
+	depends="${sourcepkg}>=${version}_${revision}"
+	short_desc+=" - development files"
+	pkg_install() {
+		vmove usr/include/modbus
+		vmove usr/lib/pkgconfig
+		vmove "usr/lib/*.so"
+	}
+}
